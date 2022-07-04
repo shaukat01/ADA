@@ -1,100 +1,103 @@
-#include <bits/stdc++.h>
-#include<iostream>
-using namespace std;
-//Salesman Problem
-int arr[10][10], n, visit[10];
-int cost_opt = 0, cost_apr = 0;
+#include<stdio.h>
+int a[10][10],n,visit[10];
+int cost_opt=0,cost_apr=0;
 int least_apr(int c);
 int least_opt(int c);
 
-void mincost(int city){
-    int i, ncity;
-    visit[city] = 1;
-    cout<<"--> "<<city<<endl;
-    ncity = least_opt(city);
-    if (ncity == 999){
-        ncity = 1;
-        cout<<" "<<ncity;
-        printf("%d", ncity);
-        cost_opt += arr[city][ncity];
-        return;
-    }
-    mincost(ncity);
-}
-void mincost_apr(int city){
-    int i, ncity;
-    visit[city] = 1;
-    cout<<"--> "<<city;
-    ncity = least_apr(city);
-    if (ncity == 999){
-        ncity = 1;
-        cout<<ncity;
-        cost_apr += arr[city][ncity];
-        return;
-    }
-    mincost_apr(ncity);
-}
-
-int least_opt(int c){
-    int i, nc = 999;
-    int min = 999, kmin = 999;
-    for (i = 1; i <= n; i++){
-        if ((arr[c][i] != 0) && (visit[i] == 0))
-            if (arr[c][i] < min){
-                min = arr[i][1] + arr[c][i];
-                kmin = arr[c][i];
-                nc = i;
-            }
-    }
-    if (min != 999)
-        cost_opt += kmin;
-    return nc;
-}
-
-int least_apr(int c){
-    int i, nc = 999;
-    int min = 999, kmin = 999;
-    for (i = 1; i <= n; i++){
-        if ((arr[c][i] != 0) && (visit[i] == 0))
-            if (arr[c][i] < kmin){
-                min = arr[i][1] + arr[c][i];
-                kmin = arr[c][i];
-                nc = i;
-            }
-        }
-    if (min != 999)
-        cost_apr += kmin;
-    return nc;
-}
-int  main()
+void mincost_opt(int city)
 {
-    int i, j;
-    cout<<"Enter No. of cities: "<<endl;
-    cin>>n;
-    cout<<"Enter the cost matrix"<<endl;
-    for (i = 1; i <= n; i++){
-        cout<<"Enter elements of row: "<<i<<endl;
-        for (j = 1; j <= n; j++)
-            cin>>arr[i][j];
-        visit[i] = 0;
-    }
-    printf("The cost list is \n");
-    for (i = 1; i <= n; i++){
-        printf("\n\n");
-        for (j = 1; j <= n; j++)
-            cout<<arr[i][j]<<" ";
-    }
-    cout<<"Optimal Solution"<<endl;
-    cout<<"The path is : "<<endl;
-    mincost(1);
-    cout<<"Minimum cost is :"<<endl;
-    cout<<cost_opt<<endl;
-    cout<<"Approximated Solution"<<endl;
-    for (i = 1; i <= n; i++)
-        visit[i] = 0;
-    cout<<"The path is : "<<endl;
-    mincost_apr(1);
-    cout<<"Minimum cost :"<<cost_apr<<endl;
-    cout<<"Error in approximation is approximated solution / optimal solution"<<((float)cost_apr / cost_opt)<<endl;
-    return 0;
+            int i,ncity;
+            visit[city]=1;
+            printf("%d-->",city);
+            ncity=least_opt(city);
+            if(ncity==999)
+            {
+                        ncity=1;
+                        printf("%d",ncity);
+                        cost_opt+=a[city][ncity];
+                        return;
+            }
+            mincost_opt(ncity);
+}
+ void mincost_apr(int city)
+ {
+            int i,ncity;
+            visit[city]=1;
+            printf("%d-->",city);
+            ncity=least_apr(city);
+            if(ncity==999)
+            {
+                        ncity=1;
+                        printf("%d",ncity);
+                        cost_apr+=a[city][ncity];
+                        return;
+            }
+            mincost_apr(ncity);
+}
+
+int least_opt(int c)
+{
+            int i,nc=999;
+            int min=999,kmin=999;
+            for(i=1;i<=n;i++)
+            {
+                        if((a[c][i]!=0)&&(visit[i]==0))
+                        if(a[c][i]<min)
+                        {
+                                    min=a[i][1]+a[c][i];
+                                    kmin=a[c][i];
+                                    nc=i;
+                        }
+            }
+            if(min!=999)
+                        cost_opt+=kmin;
+            return nc;
+}
+
+int least_apr(int c)
+{
+            int i,nc=999;
+            int min=999,kmin=999;
+for(i=1;i<=n;i++)
+            {
+                        if((a[c][i]!=0)&&(visit[i]==0))
+                                    if(a[c][i]<kmin)
+                                    {
+                                                min=a[i][1]+a[c][i];
+                                                kmin=a[c][i];
+                                                nc=i;
+                                    }
+            }
+            if(min!=999)
+                        cost_apr+=kmin;
+            return nc;
+}
+ int main()
+{
+            int i,j;
+            printf("Enter No. of cities:\n");
+            scanf("%d",&n);
+
+            printf("Enter the cost matrix\n");
+            for(i=1;i<=n;i++)
+            {
+                        for(j=1;j<=n;j++)
+                                    scanf("%d",&a[i][j]);
+                        visit[i]=0;
+            }
+            printf("\n\n Optimal Solution :\n");
+            printf("The path is :\n");
+            mincost_opt(1);
+            printf("\n Minimum cost:");
+            printf("%d",cost_opt);
+
+            printf("\n\n Approximated Solution :\n");
+            for(i=1;i<=n;i++)
+                        visit[i]=0;
+            printf("The path is :\n");
+            mincost_apr(1);
+            printf("\nMinimum cost:");
+            printf("%d",cost_apr);
+            printf("\nError in approximation is approximated solution/optimal solution=%f",
+                        (float)cost_apr/cost_opt);
 }
